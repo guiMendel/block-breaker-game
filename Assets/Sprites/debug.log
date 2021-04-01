@@ -1,0 +1,5 @@
+[0330/214530.467:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0330/232139.609:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0330/232140.329:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0330/232140.409:WARNING:dns_config_service_win.cc(668)] Failed to read DnsConfig.
+[0330/233940.929:ERROR:browser_gpu_channel_host_factory.cc(139)] Failed to launch GPU process.
