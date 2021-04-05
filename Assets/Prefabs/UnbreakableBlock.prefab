@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7444115016261084945}
   - component: {fileID: 7444115016261084944}
   m_Layer: 0
-  m_Name: Block
-  m_TagString: Untagged
+  m_Name: UnbreakableBlock
+  m_TagString: Unbreakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a48ddb442591e83418c9f5a921cbcc21, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,3 +124,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breakSound: {fileID: 8300000, guid: c84c8b5aa80d86f4aa3cd8324d5771bc, type: 3}
+  blockSparklesVFX: {fileID: 100000, guid: 7d846c02296ef4dc4abff04ce3e5262c, type: 3}
+  gameSession: {fileID: 0}

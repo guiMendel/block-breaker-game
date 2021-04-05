@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GameStatus : MonoBehaviour
+public class GameSession : MonoBehaviour
 {
   // config params
   [SerializeField] [Range(0.1f, 10f)] float gameSpeed = 1f;
@@ -13,6 +13,21 @@ public class GameStatus : MonoBehaviour
 
   // state
   [SerializeField] int score = 0;
+
+  private void Awake() {
+    // Gets all instances of this class
+    int gameSessionCount = FindObjectsOfType<GameSession>().Length;
+
+    // Finds out whether this is the first one created or not
+    if (gameSessionCount > 1) {
+      gameObject.SetActive(false);
+      Destroy(gameObject);
+    }
+    else {
+      DontDestroyOnLoad(gameObject);
+    }
+  }
+  
   // Update is called once per frame
   private void Start() {
     scoreText.text = score.ToString();
@@ -27,5 +42,9 @@ public class GameStatus : MonoBehaviour
   {
     score += blockPoints;
     scoreText.text = score.ToString();
+  }
+
+  public void ResetGame() {
+    Destroy(gameObject);
   }
 }
