@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+  // config params
   [SerializeField] AudioClip breakSound;
   [SerializeField] GameObject blockSparklesVFX;
+  [SerializeField] Sprite[] damageLevelSprites;
 
   // cached references
   Level level;
-  [Header("For Debugging")]
   [SerializeField] GameSession gameSession; // for debug
+
+  // state
+  [SerializeField] int timesHit; // serialized for debug
 
   private void Start()
   {
@@ -22,7 +26,25 @@ public class Block : MonoBehaviour
 
   private void OnCollisionEnter2D(Collision2D other)
   {
-    if (tag == "Breakable") DestroyBlock();
+    if (tag == "Breakable")
+    {
+      HandleHit();
+    }
+  }
+
+  private void HandleHit()
+  {
+    int maxHits = damageLevelSprites.Length + 1;
+    if (++timesHit >= maxHits) DestroyBlock();
+    else ShowNextDamageSprite();
+  }
+
+  private void ShowNextDamageSprite()
+  {
+    int spriteIndex = timesHit - 1;
+    if (damageLevelSprites[spriteIndex] != null)
+      GetComponent<SpriteRenderer>().sprite = damageLevelSprites[spriteIndex];
+    else Debug.LogError("Block sprite is missing from array. At " + gameObject.name);
   }
 
   private void DestroyBlock()
