@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -9,6 +6,7 @@ public class Ball : MonoBehaviour
   [SerializeField] Paddle paddle;
   [SerializeField] float launchVelocity = 13f;
   [SerializeField] AudioClip[] ballSounds;
+  [SerializeField] float randomFactor = 0.2f;
   // [Header("State")]
 
   // state
@@ -17,12 +15,14 @@ public class Ball : MonoBehaviour
 
   // cached component references
   AudioSource audioSource;
+  Rigidbody2D rigidBody2D;
 
   // Start is called before the first frame update
   void Start()
   {
     paddleToBallVector = transform.position - paddle.transform.position;
     audioSource = GetComponent<AudioSource>();
+    rigidBody2D = GetComponent<Rigidbody2D>();
   }
 
   // Update is called once per frame
@@ -72,9 +72,53 @@ public class Ball : MonoBehaviour
 
   private void OnCollisionEnter2D(Collision2D other)
   {
-    if (hasStarted) {
-      AudioClip clip = ballSounds[UnityEngine.Random.Range(0, ballSounds.Length)];
+    if (hasStarted)
+    {
+      AudioClip clip = ballSounds[Random.Range(0, ballSounds.Length)];
       audioSource.PlayOneShot(clip);
+      TweakVelocity();
     }
+  }
+
+  private void TweakVelocity()
+  {
+    // Inserts a bit of randomness on the ball's direction
+    float velocityTweak = Random.Range(0, randomFactor);
+
+    // What we give we also take, to ensure the overall velocity remains unaltered
+    rigidBody2D.velocity += new Vector2(velocityTweak, -velocityTweak);
+
+    float AlterX(ref float tweak)
+    {
+      rigidBody2D.velocity.Set(ReduceBy(rigidBody2D.velocity.x, ref tweak), rigidBody2D.velocity.y);
+    }
+
+    float AlterY(ref float tweak)
+    {
+      rigidBody2D.velocity.Set(rigidBody2D.velocity.x, ReduceBy(rigidBody2D.velocity.y, ref tweak));
+    }
+
+    var tweakFunctions = { () => AlterX(ref velocityTweak), () => AlterY(ref velocityTweak) };
+
+
+  }
+
+  private float ReduceBy(float x, ref float n)
+  {
+    // Get the reduced absolute value
+    float reduced = Mathf.Abs(x) - n;
+
+    // See if is lower than 0
+    if (reduced < 0f)
+    {
+      // Set n to the amount that was successfully reduced
+      n = Mathf.Abs(x);
+      return 0f;
+    }
+
+    // Find out the signal of the original number
+    float signal = (x < 0f ? -1f : 1f);
+
+    return signal * reduced;
   }
 }
