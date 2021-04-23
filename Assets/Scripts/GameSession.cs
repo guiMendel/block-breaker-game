@@ -10,29 +10,40 @@ public class GameSession : MonoBehaviour
   [Header("Score Settings")]
   [SerializeField] TextMeshProUGUI scoreText;
   [SerializeField] int blockPoints;
+  [SerializeField] bool autoPlay;
 
   // state
   [SerializeField] int score = 0;
 
-  private void Awake() {
+  // getters
+  public bool AutoPlayEnabled()
+  {
+    return autoPlay;
+  }
+
+  private void Awake()
+  {
     // Gets all instances of this class
     int gameSessionCount = FindObjectsOfType<GameSession>().Length;
 
     // Finds out whether this is the first one created or not
-    if (gameSessionCount > 1) {
+    if (gameSessionCount > 1)
+    {
       gameObject.SetActive(false);
       Destroy(gameObject);
     }
-    else {
+    else
+    {
       DontDestroyOnLoad(gameObject);
     }
   }
-  
+
   // Update is called once per frame
-  private void Start() {
+  private void Start()
+  {
     scoreText.text = score.ToString();
   }
-  
+
   void Update()
   {
     Time.timeScale = gameSpeed;
@@ -44,7 +55,8 @@ public class GameSession : MonoBehaviour
     scoreText.text = score.ToString();
   }
 
-  public void ResetGame() {
+  public void ResetGame()
+  {
     Destroy(gameObject);
   }
 }
